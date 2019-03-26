@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.djrapitops</groupId>
-    <artifactId>Extension-template</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>Extension-DiscordSRV</artifactId>
+    <version>1.16.6-R0.1</version>
     <build>
         <plugins>
             <plugin>
@@ -26,12 +26,17 @@
             <url>https://dl.bintray.com/rsl1122/Plan-repository/</url>
         </repository>
 
+        <repository>
+            <id>discordsrv-repo</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
+
         <!-- Platforms -->
 
-        <!--<repository>-->
-        <!--<id>spigot-repo</id>-->
-        <!--<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>-->
-        <!--</repository>-->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
         <!--<repository>-->
         <!--<id>sponge-repo</id>-->
         <!--<url>https://repo.spongepowered.org/maven</url>-->
@@ -50,25 +55,25 @@
         <dependency> <!-- Plan API -->
             <groupId>com.djrapitops</groupId>
             <artifactId>Plan-api</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- Plugin API Dependency -->
-        <!--<dependency>-->
-        <!--<groupId></groupId>-->
-        <!--<artifactId></artifactId>-->
-        <!--<version></version>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.16.6</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Platforms -->
 
-        <!--<dependency>-->
-        <!--<groupId>org.spigotmc</groupId>-->
-        <!--<artifactId>spigot-api</artifactId>-->
-        <!--<version>1.12.2-R0.1-SNAPSHOT</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>org.spongepowered</groupId>-->
         <!--<artifactId>spongeapi</artifactId>-->
@@ -105,12 +110,11 @@
         </dependency>
     </dependencies>
 
-    <!-- TODO add name of the extension to the url-->
-    <!--<distributionManagement>-->
-    <!--<repository>-->
-    <!--<id>bintray-rsl1122-Plan-repository</id>-->
-    <!--<name>rsl1122-Plan-repository</name>-->
-    <!--<url>https://api.bintray.com/maven/rsl1122/Plan-repository/<name>/;publish=1</url>-->
-    <!--</repository>-->
-    <!--</distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>bintray-rsl1122-Plan-repository</id>
+            <name>rsl1122-Plan-repository</name>
+            <url>https://api.bintray.com/maven/rsl1122/Plan-repository/Extension-DiscordSRV/;publish=1</url>
+        </repository>
+    </distributionManagement>
 </project>
