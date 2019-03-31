@@ -22,6 +22,7 @@
 */
 package com.djrapitops.extension;
 
+import com.djrapitops.plan.extension.CallEvents;
 import com.djrapitops.plan.extension.DataExtension;
 import com.djrapitops.plan.extension.FormatType;
 import com.djrapitops.plan.extension.annotation.*;
@@ -45,9 +46,16 @@ import java.util.UUID;
  *
  * @author Rsl1122
  */
-@PluginInfo(name = "DiscordSRV", iconName = "discord", iconFamily = Family.BRAND, color = Color.CYAN,
-        updatePlayerDataOnLeave = true, updateServerDataPeriodically = true)
+@PluginInfo(name = "DiscordSRV", iconName = "discord", iconFamily = Family.BRAND, color = Color.CYAN)
 public class DiscordSRVExtension implements DataExtension {
+
+    @Override
+    public CallEvents[] callExtensionMethodsOn() {
+        return new CallEvents[]{
+                CallEvents.PLAYER_JOIN, CallEvents.PLAYER_LEAVE,
+                CallEvents.SERVER_EXTENSION_REGISTER, CallEvents.SERVER_PERIODICAL
+        };
+    }
 
     @BooleanProvider(
             text = "Has Linked Account",
