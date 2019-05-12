@@ -98,16 +98,6 @@ public class DiscordSRVExtension implements DataExtension {
         return input1 / input2;
     }
 
-    @StringProvider(
-            text = "Warning!",
-            description = "DiscordSRV is not ready",
-            iconName = "exclamation-triangle",
-            iconColor = Color.AMBER
-    )
-    public String notReadyNotice() {
-        return "DiscordSRV isn't ready yet, no data is available.";
-    }
-
     @BooleanProvider(
             text = "Has Linked Account",
             description = "Has the player linked their Discord account",
