@@ -29,15 +29,13 @@ import com.djrapitops.plan.extension.annotation.*;
 import com.djrapitops.plan.extension.icon.Color;
 import com.djrapitops.plan.extension.icon.Family;
 import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.core.entities.Guild;
 import github.scarsz.discordsrv.dependencies.jda.core.entities.Member;
 import github.scarsz.discordsrv.dependencies.jda.core.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.core.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * DataExtension for DiscordSRV.
@@ -57,6 +55,57 @@ public class DiscordSRVExtension implements DataExtension {
         };
     }
 
+    private Optional<User> getDiscordUser(UUID playerUUID) {
+        return Optional.ofNullable(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(playerUUID))
+                .map(DiscordUtil::getUserById);
+    }
+
+    private Optional<Guild> getMainGuild() {
+        Guild mainGuild = DiscordSRV.getPlugin().getMainGuild();
+        return mainGuild != null ? Optional.of(mainGuild) : Optional.empty();
+    }
+
+    private Optional<Member> getMember(UUID playerUUID) {
+        return getMainGuild().flatMap(guild -> getDiscordUser(playerUUID).map(guild::getMember));
+    }
+
+    private int getLinkedAccountCount() {
+        return DiscordSRV.getPlugin().getAccountLinkManager().getLinkedAccounts().size();
+    }
+
+    private int getGuildMemberCount() {
+        return getMainGuild().map(guild -> guild.getMembers().size()).orElse(-1);
+    }
+
+    private double calculatePercentage(double input1, double input2) {
+        if (input1 == 0 || input2 == 0) {
+            return 0.0;
+        }
+
+        return input1 / input2;
+    }
+
+    @BooleanProvider(
+            text = "Is DiscordSRV Ready",
+            hidden = true,
+            conditionName = "isReady"
+    )
+    public boolean isReady() {
+        return DiscordSRV.isReady;
+    }
+
+    @Conditional(value = "isReady", negated = true)
+    @StringProvider(
+            text = "Warning!",
+            description = "DiscordSRV is not ready",
+            iconName = "exclamation-triangle",
+            iconColor = Color.AMBER
+    )
+    public String notReadyNotice() {
+        return "DiscordSRV isn't ready yet, no data is available.";
+    }
+
+    @Conditional("isReady")
     @BooleanProvider(
             text = "Has Linked Account",
             description = "Has the player linked their Discord account",
@@ -67,14 +116,6 @@ public class DiscordSRVExtension implements DataExtension {
     )
     public boolean hasLinkedAccount(UUID playerUUID) {
         return getDiscordUser(playerUUID).isPresent();
-    }
-
-    private Optional<User> getDiscordUser(UUID playerUUID) {
-        if (!DiscordSRV.isReady) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(playerUUID))
-                .map(DiscordUtil::getUserById);
     }
 
     @Conditional("hasLinkedAccount")
@@ -112,10 +153,6 @@ public class DiscordSRVExtension implements DataExtension {
         return getMember(playerUUID).isPresent();
     }
 
-    private Optional<Member> getMember(UUID playerUUID) {
-        return getDiscordUser(playerUUID).map(DiscordSRV.getPlugin().getMainGuild()::getMember);
-    }
-
     @Conditional("hasMember")
     @StringProvider(
             text = "Nickname",
@@ -150,7 +187,7 @@ public class DiscordSRVExtension implements DataExtension {
             iconColor = Color.RED
     )
     public String roles(UUID playerUUID) {
-        List<Role> roles = getMember(playerUUID).map(Member::getRoles).orElse(new ArrayList<>());
+        List<Role> roles = getMember(playerUUID).map(Member::getRoles).orElse(Collections.emptyList());
 
         if (roles.isEmpty()) {
             return "-";
@@ -168,6 +205,7 @@ public class DiscordSRVExtension implements DataExtension {
         return roleBuilder.toString();
     }
 
+    @Conditional("isReady")
     @NumberProvider(
             text = "Accounts Linked",
             description = "How many discord users have linked their player accounts.",
@@ -176,17 +214,10 @@ public class DiscordSRVExtension implements DataExtension {
             iconColor = Color.CYAN
     )
     public long accountsLinked() {
-        if (!DiscordSRV.isReady) {
-            return 0L;
-        }
-
         return getLinkedAccountCount();
     }
 
-    private int getLinkedAccountCount() {
-        return DiscordSRV.getPlugin().getAccountLinkManager().getLinkedAccounts().size();
-    }
-
+    @Conditional("isReady")
     @NumberProvider(
             text = "Users in main guild",
             description = "How many discord users are on the main guild.",
@@ -195,17 +226,10 @@ public class DiscordSRVExtension implements DataExtension {
             iconColor = Color.CYAN
     )
     public long guildUsers() {
-        if (!DiscordSRV.isReady) {
-            return 0L;
-        }
-
         return getGuildMemberCount();
     }
 
-    private int getGuildMemberCount() {
-        return DiscordSRV.getPlugin().getMainGuild().getMembers().size();
-    }
-
+    @Conditional("isReady")
     @PercentageProvider(
             text = "Accounts linked / Users in main guild",
             description = "Percentage of users in guild who have linked their accounts.",
@@ -213,15 +237,7 @@ public class DiscordSRVExtension implements DataExtension {
             iconName = "percentage",
             iconColor = Color.LIGHT_GREEN
     )
-    public double accountsLinkedPerGuild() {
+    public double accountsLinkedPerMembers() {
         return calculatePercentage(getLinkedAccountCount(), getGuildMemberCount());
-    }
-
-    private double calculatePercentage(double input1, double input2) {
-        if (input1 == 0 || input2 == 0) {
-            return 0.0;
-        }
-
-        return input1 / input2;
     }
 }
