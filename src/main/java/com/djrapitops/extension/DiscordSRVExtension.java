@@ -25,6 +25,7 @@ package com.djrapitops.extension;
 import com.djrapitops.plan.extension.CallEvents;
 import com.djrapitops.plan.extension.DataExtension;
 import com.djrapitops.plan.extension.FormatType;
+import com.djrapitops.plan.extension.NotReadyException;
 import com.djrapitops.plan.extension.annotation.*;
 import com.djrapitops.plan.extension.icon.Color;
 import com.djrapitops.plan.extension.icon.Family;
@@ -35,7 +36,10 @@ import github.scarsz.discordsrv.dependencies.jda.core.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.core.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * DataExtension for DiscordSRV.
@@ -55,14 +59,22 @@ public class DiscordSRVExtension implements DataExtension {
         };
     }
 
+    private void ensureDiscordSRVisReady() {
+        if (!DiscordSRV.isReady) {
+            throw new NotReadyException();
+        }
+    }
+
     private Optional<User> getDiscordUser(UUID playerUUID) {
+        ensureDiscordSRVisReady();
         return Optional.ofNullable(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(playerUUID))
                 .map(DiscordUtil::getUserById);
     }
 
     private Optional<Guild> getMainGuild() {
+        ensureDiscordSRVisReady();
         Guild mainGuild = DiscordSRV.getPlugin().getMainGuild();
-        return mainGuild != null ? Optional.of(mainGuild) : Optional.empty();
+        return Optional.ofNullable(mainGuild);
     }
 
     private Optional<Member> getMember(UUID playerUUID) {
@@ -70,6 +82,7 @@ public class DiscordSRVExtension implements DataExtension {
     }
 
     private int getLinkedAccountCount() {
+        ensureDiscordSRVisReady();
         return DiscordSRV.getPlugin().getAccountLinkManager().getLinkedAccounts().size();
     }
 
@@ -85,16 +98,6 @@ public class DiscordSRVExtension implements DataExtension {
         return input1 / input2;
     }
 
-    @BooleanProvider(
-            text = "Is DiscordSRV Ready",
-            hidden = true,
-            conditionName = "isReady"
-    )
-    public boolean isReady() {
-        return DiscordSRV.isReady;
-    }
-
-    @Conditional(value = "isReady", negated = true)
     @StringProvider(
             text = "Warning!",
             description = "DiscordSRV is not ready",
@@ -105,7 +108,6 @@ public class DiscordSRVExtension implements DataExtension {
         return "DiscordSRV isn't ready yet, no data is available.";
     }
 
-    @Conditional("isReady")
     @BooleanProvider(
             text = "Has Linked Account",
             description = "Has the player linked their Discord account",
@@ -123,8 +125,10 @@ public class DiscordSRVExtension implements DataExtension {
             text = "Username",
             description = "Linked Discord username of the player",
             priority = 100,
-            iconName = "user",
-            iconColor = Color.CYAN
+            iconName = "discord",
+            iconFamily = Family.BRAND,
+            iconColor = Color.CYAN,
+            showInPlayerTable = true
     )
     public String username(UUID playerUUID) {
         return getDiscordUser(playerUUID).map(user -> '@' + user.getName() + '#' + user.getDiscriminator()).orElse("Not Linked");
@@ -205,7 +209,6 @@ public class DiscordSRVExtension implements DataExtension {
         return roleBuilder.toString();
     }
 
-    @Conditional("isReady")
     @NumberProvider(
             text = "Accounts Linked",
             description = "How many discord users have linked their player accounts.",
@@ -217,7 +220,6 @@ public class DiscordSRVExtension implements DataExtension {
         return getLinkedAccountCount();
     }
 
-    @Conditional("isReady")
     @NumberProvider(
             text = "Users in main guild",
             description = "How many discord users are on the main guild.",
@@ -229,7 +231,6 @@ public class DiscordSRVExtension implements DataExtension {
         return getGuildMemberCount();
     }
 
-    @Conditional("isReady")
     @PercentageProvider(
             text = "Accounts linked / Users in main guild",
             description = "Percentage of users in guild who have linked their accounts.",
