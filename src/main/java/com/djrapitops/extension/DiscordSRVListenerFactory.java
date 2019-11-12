@@ -20,41 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.djrapitops.extension;
 
 import com.djrapitops.plan.extension.Caller;
-import com.djrapitops.plan.extension.DataExtension;
 
-import java.util.Optional;
+public class DiscordSRVListenerFactory {
 
-/**
- * Factory for DataExtension.
- *
- * @author Rsl1122
- */
-public class DiscordSRVExtensionFactory {
-
-    private boolean isAvailable() {
-        try {
-            Class.forName("github.scarsz.discordsrv.DiscordSRV");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-
-    public Optional<DataExtension> createExtension() {
-        if (isAvailable()) {
-            return Optional.of(new DiscordSRVExtension());
-        }
-        return Optional.empty();
-
-    }
-
-    public void registerListener(Caller caller) {
-        DiscordSRVListener listener = DiscordSRVListenerFactory.createListener(caller);
-
-        github.scarsz.discordsrv.DiscordSRV.api.subscribe(listener);
-        github.scarsz.discordsrv.util.DiscordUtil.getJda().addEventListener(listener);
+    static DiscordSRVListener createListener(Caller caller) {
+        return new DiscordSRVListener(caller);
     }
 }
