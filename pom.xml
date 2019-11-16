@@ -6,7 +6,7 @@
 
     <groupId>com.djrapitops</groupId>
     <artifactId>Extension-DiscordSRV</artifactId>
-    <version>1.18.0-R0.2</version>
+    <version>1.18.0-R0.3</version>
     <build>
         <plugins>
             <plugin>

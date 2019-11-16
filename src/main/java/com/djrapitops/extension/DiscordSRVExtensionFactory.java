@@ -24,6 +24,8 @@ package com.djrapitops.extension;
 
 import com.djrapitops.plan.extension.Caller;
 import com.djrapitops.plan.extension.DataExtension;
+import github.scarsz.discordsrv.dependencies.jda.api.JDA;
+import github.scarsz.discordsrv.util.DiscordUtil;
 
 import java.util.Optional;
 
@@ -55,6 +57,7 @@ public class DiscordSRVExtensionFactory {
         DiscordSRVListener listener = DiscordSRVListenerFactory.createListener(caller);
 
         github.scarsz.discordsrv.DiscordSRV.api.subscribe(listener);
-        github.scarsz.discordsrv.util.DiscordUtil.getJda().addEventListener(listener);
+        JDA jda = DiscordUtil.getJda();
+        if (jda != null) jda.addEventListener(listener);
     }
 }
