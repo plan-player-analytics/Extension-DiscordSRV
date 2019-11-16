@@ -6,7 +6,7 @@
 
     <groupId>com.djrapitops</groupId>
     <artifactId>Extension-DiscordSRV</artifactId>
-    <version>1.16.6-R0.4</version>
+    <version>1.18.0-R0.2</version>
     <build>
         <plugins>
             <plugin>
@@ -55,7 +55,7 @@
         <dependency> <!-- Plan API -->
             <groupId>com.djrapitops</groupId>
             <artifactId>Plan-api</artifactId>
-            <version>0.0.5</version>
+            <version>5.0-R0.3</version>
             <scope>provided</scope>
         </dependency>
 
