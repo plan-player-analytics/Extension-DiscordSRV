@@ -1,5 +1,5 @@
 /*
- * Copyright(c) 2019 Risto Lahtela (Rsl1122)
+ * Copyright(c) 2019 Risto Lahtela (AuroraLS3)
  *
  * The MIT License(MIT)
  *
@@ -43,7 +43,7 @@ import java.util.*;
  * <p>
  * Adapted from PluginData implementation by Vankka.
  *
- * @author Rsl1122
+ * @author AuroraLS3
  */
 @PluginInfo(name = "DiscordSRV", iconName = "discord", iconFamily = Family.BRAND, color = Color.CYAN)
 public class DiscordSRVExtension implements DataExtension {
