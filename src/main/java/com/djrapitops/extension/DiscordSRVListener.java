@@ -63,7 +63,6 @@ public class DiscordSRVListener extends ListenerAdapter {
         }
 
         final AccountLinkManager manager = DiscordSRV.getPlugin().getAccountLinkManager();
-
         if (manager == null) {
             return;
         }
