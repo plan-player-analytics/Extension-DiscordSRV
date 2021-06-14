@@ -37,6 +37,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.update.
 import github.scarsz.discordsrv.dependencies.jda.api.events.user.update.UserUpdateDiscriminatorEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.events.user.update.UserUpdateNameEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.hooks.ListenerAdapter;
+import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -61,7 +62,13 @@ public class DiscordSRVListener extends ListenerAdapter {
             return;
         }
 
-        UUID uuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId());
+        final AccountLinkManager manager = DiscordSRV.getPlugin().getAccountLinkManager();
+
+        if (manager == null) {
+            return;
+        }
+
+        UUID uuid = manager.getUuid(user.getId());
         if (uuid == null) {
             return;
         }
