@@ -1,5 +1,5 @@
 /*
- * Copyright(c) 2019 Risto Lahtela (AuroraLS3)
+ * Copyright(c) 2019 AuroraLS3
  *
  * The MIT License(MIT)
  *
@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package com.djrapitops.extension;
+package net.playeranalytics.extension.discordsrv;
 
 import com.djrapitops.plan.extension.Caller;
 import github.scarsz.discordsrv.DiscordSRV;
@@ -30,7 +30,7 @@ import github.scarsz.discordsrv.api.events.AccountLinkedEvent;
 import github.scarsz.discordsrv.api.events.AccountUnlinkedEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.GuildMemberJoinEvent;
-import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
@@ -40,6 +40,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.hooks.ListenerAdapter;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -116,7 +117,7 @@ public class DiscordSRVListener extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMemberLeave(@Nonnull GuildMemberLeaveEvent event) {
+    public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
         updateUser(event.getUser());
     }
 

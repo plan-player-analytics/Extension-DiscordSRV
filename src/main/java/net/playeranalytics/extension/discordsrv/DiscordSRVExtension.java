@@ -1,5 +1,5 @@
 /*
- * Copyright(c) 2019 Risto Lahtela (AuroraLS3)
+ * Copyright(c) 2019 AuroraLS3
  *
  * The MIT License(MIT)
  *
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.djrapitops.extension;
+package net.playeranalytics.extension.discordsrv;
 
 import com.djrapitops.plan.extension.CallEvents;
 import com.djrapitops.plan.extension.DataExtension;
@@ -36,7 +36,10 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * DataExtension for DiscordSRV.
