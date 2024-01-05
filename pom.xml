@@ -6,7 +6,7 @@
 
     <groupId>net.playeranalytics</groupId>
     <artifactId>Extension-DiscordSRV</artifactId>
-    <version>1.25.1-R1.4</version>
+    <version>1.27.0-R1.4</version>
     <build>
         <plugins>
             <plugin>
@@ -54,14 +54,14 @@
         <dependency> <!-- Plan API -->
             <groupId>com.djrapitops</groupId>
             <artifactId>plan-api</artifactId>
-            <version>5.2-R0.1</version>
+            <version>5.2-R0.9</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.25.1</version>
+            <version>1.27.0</version>
             <scope>provided</scope>
         </dependency>
 
